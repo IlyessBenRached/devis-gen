@@ -139,24 +139,30 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
                       <td className="px-3 py-3 text-right text-xs font-mono">{fmtNum(item.totalPrice)}</td>
                     </tr>
                   ))}
-                  {devis.transportFee > 0 && (
-                    <tr className="border-b border-gray-200">
-                      <td className="px-3 py-3 text-center text-xs border-r border-gray-300">{devis.items.length + 1}</td>
-                      <td className="px-3 py-3 text-xs border-r border-gray-300" colSpan={3}>Transport fees</td>
-                      <td className="px-3 py-3 text-center text-xs border-r border-gray-300">—</td>
-                      <td className="px-3 py-3 text-right text-xs font-mono">{fmtNum(devis.transportFee)}</td>
-                    </tr>
-                  )}
                   <tr>
-                    <td colSpan={5} className="px-3 py-3 text-center text-sm font-bold text-gray-900 border-r border-gray-300">
-                      GRAND TOTAL EXW ({devis.currency})
+                    <td colSpan={5} className="px-3 py-3 text-center text-sm font-bold text-gray-500 border-r border-gray-300">
+                      SUBTOTAL ({devis.currency})
                     </td>
-                    <td className="px-3 py-3 text-right text-sm font-bold text-gray-900">
-                      {fmtNum(devis.grandTotal)}
+                    <td className="px-3 py-3 text-right text-sm font-bold text-gray-700">
+                      {fmtNum(devis.subtotal)}
                     </td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+
+            {/* Transport fee — below table */}
+            {devis.transportFee > 0 && (
+              <div className="flex justify-between items-center px-4 py-2 border border-dashed border-gray-300 text-sm mt-1">
+                <span className="text-gray-500">+ Transport fees</span>
+                <span className="font-bold text-gray-800">{fmtNum(devis.transportFee)} {devis.currency}</span>
+              </div>
+            )}
+
+            {/* Grand total */}
+            <div className="flex justify-between items-center px-4 py-3 bg-amber-500 mt-1">
+              <span className="font-bold text-white text-sm">GRAND TOTAL EXW ({devis.currency})</span>
+              <span className="font-bold text-white text-base">{fmtNum(devis.grandTotal)}</span>
             </div>
           </div>
 

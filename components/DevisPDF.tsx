@@ -350,19 +350,50 @@ export default function DevisPDF({ devis }: { devis: DevisData }) {
             </View>
           ))}
 
-          {devis.transportFee > 0 && (
-            <View style={s.tRow}>
-              <View style={[s.tCell, s.cRef]}><Text style={s.tText}>{devis.items.length + 1}</Text></View>
-              <View style={[s.tCell, { flex: 1 }]}><Text style={[s.tText, { textAlign: "left" }]}>Transport fees</Text></View>
-              <View style={[s.tCell, s.cPrice]}><Text style={s.tText}>—</Text></View>
-              <View style={[s.tCellNoBorder, s.cTotal]}><Text style={[s.tText, { textAlign: "right" }]}>{fmtNum(devis.transportFee)}</Text></View>
-            </View>
-          )}
-
           <View style={s.tRowLast}>
-            <View style={s.gtLabelCell}><Text style={s.gtLabel}>GRAND TOTAL EXW ({devis.currency})</Text></View>
-            <View style={s.gtValueCell}><Text style={s.gtValue}>{fmtNum(devis.grandTotal)}</Text></View>
+            <View style={s.gtLabelCell}><Text style={s.gtLabel}>SUBTOTAL ({devis.currency})</Text></View>
+            <View style={s.gtValueCell}><Text style={s.gtValue}>{fmtNum(devis.subtotal)}</Text></View>
           </View>
+        </View>
+
+        {/* Transport fee — below table */}
+        {devis.transportFee > 0 && (
+          <View style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 3,
+            paddingVertical: 6,
+            paddingHorizontal: 10,
+            borderWidth: 0.75,
+            borderColor: colors.lightGrey,
+            borderStyle: "dashed",
+          }}>
+            <Text style={{ fontSize: 8.5, color: colors.grey }}>
+              + Transport fees
+            </Text>
+            <Text style={{ fontSize: 8.5, color: colors.black, fontWeight: "bold" }}>
+              {fmtNum(devis.transportFee)} {devis.currency}
+            </Text>
+          </View>
+        )}
+
+        {/* Grand total */}
+        <View style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: 3,
+          paddingVertical: 8,
+          paddingHorizontal: 10,
+          backgroundColor: colors.accentGold,
+        }}>
+          <Text style={{ fontSize: 9, fontWeight: "bold", color: colors.white }}>
+            GRAND TOTAL EXW ({devis.currency})
+          </Text>
+          <Text style={{ fontSize: 10, fontWeight: "bold", color: colors.white }}>
+            {fmtNum(devis.grandTotal)}
+          </Text>
         </View>
 
         <Footer />
