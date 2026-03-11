@@ -441,12 +441,12 @@ export default function DevisPDF({ devis }: { devis: DevisData }) {
           {renderPage2(devis.page2Text)}
         </View>
 
-        <View style={s.stampSection}>
+        {/* <View style={s.stampSection}>
           <View style={s.stampBox}>
             <Text style={s.stampText}>CARTHAGE CROWN OLIVE OIL</Text>
             <Text style={s.stampSub}>Avenue Habib Bourguiba{"\n"}Jebeniana — Sfax, Tunisia{"\n"}+33 7 59 52 75 90</Text>
           </View>
-        </View>
+        </View> */}
 
         <Footer />
       </Page>

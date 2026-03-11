@@ -246,7 +246,7 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
             {/* Stamp placeholder */}
             <div className="flex justify-end mt-8">
               <div className="w-36 h-16 border-2 border-amber-400 rounded flex flex-col items-center justify-center text-center">
-                <div className="text-xs font-bold text-amber-800">CARTHAGE CROWN OLIVE OIL</div>
+                <div className="text-xs font-bold text-amber-800">CARTHAGE CROWN OLIVE OIL France</div>
                 <div className="text-xs text-gray-500 mt-0.5">Jebeniana — Sfax, Tunisia</div>
                 <div className="text-xs text-gray-500">+33 7 59 52 75 90</div>
               </div>
