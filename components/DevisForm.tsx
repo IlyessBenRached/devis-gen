@@ -3,7 +3,6 @@
 
 import { useState } from 'react'
 
-// Types
 interface LineItem {
   id: string
   contenance: string
@@ -33,45 +32,23 @@ interface DevisFormProps {
   onPreview: (data: DevisFormData) => void
 }
 
-// Product configurations
 const CONTENANCES = [
-  { id: 'ml250', label: '250 ml', price: 1.517 },
-  { id: 'ml500', label: '500 ml', price: 2.508 },
-  { id: 'ml750', label: '750 ml', price: 3.429 },
-  { id: 'ml1000', label: '1L', price: 4.351 },
-  { id: 'l3', label: '3L', price: 10.500 },
-  { id: 'l5', label: '5L', price: 18.726 },
-  { id: 'l10', label: '10L', price: 35.000 },
-  { id: 'l15', label: '15L', price: 52.000 },
-  { id: 'l20', label: '20L', price: 68.000 },
+  { id: 'ml250',  label: '250 ml', price: 1.517  },
+  { id: 'ml500',  label: '500 ml', price: 2.508  },
+  { id: 'ml750',  label: '750 ml', price: 3.429  },
+  { id: 'ml1000', label: '1L',     price: 5.846  },
+  { id: 'l3',     label: '3L',     price: 10.500 },
+  { id: 'l5',     label: '5L',     price: 24.320 },
+  { id: 'l10',    label: '10L',    price: 35.000 },
+  { id: 'l15',    label: '15L',    price: 52.000 },
+  { id: 'l20',    label: '20L',    price: 97.490 },
 ]
 
 const CONDITIONNEMENTS = [
   { id: 'verre', label: 'Bouteille en verre' },
-  { id: 'metal', label: 'Bidon Métallique' },
+  { id: 'metal', label: 'Bidon Métallique'   },
 ]
 
-const UNITS_PER_PALLET: Record<string, number> = {
-  ml250: 2016, ml500: 1248, ml750: 1152, ml1000: 1008,
-  l3: 300, l5: 400, l10: 384, l20: 495,
-}
-
-const getPaletteOptions = (contenanceId: string) => {
-  const upp = UNITS_PER_PALLET[contenanceId]
-  if (!upp) return []
-  return [1, 2, 3, 5, 10, 15, 20].map(n => ({
-    palettes: n,
-    units: n * upp,
-  }))
-}
-
-const getPaletteCount = (contenanceId: string, qty: number): number | null => {
-  const upp = UNITS_PER_PALLET[contenanceId]
-  if (!upp) return null
-  return qty / upp
-}
-
-// Default page 2 text matching reference proforma
 const DEFAULT_PAGE2_TEXT = `SHIPPING TERMS
 Origin and Source: Tunisia
 Incoterm: EXW - Sfax , Tunisia
@@ -93,41 +70,43 @@ All banking charges outside Tunisia are at buyer's account.
 Delivery time: 30 days after order confirmation and receipt of advance payment (30%)
 Offer validity: Valid for 7 days from the date of issue of the quotation`
 
+// ── Hardcoded default items — DO NOT change quantities ───
+const DEFAULT_ITEMS: LineItem[] = [
+  { id: 'default-1', contenance: 'ml1000', conditionnement: 'verre', quantity: 5040, unitPrice: 5.846,  totalPrice: 5.846  * 5040 },
+  { id: 'default-2', contenance: 'l5',     conditionnement: 'metal', quantity: 3240, unitPrice: 24.320, totalPrice: 24.320 * 3240 },
+  { id: 'default-3', contenance: 'l20',    conditionnement: 'metal', quantity: 225,  unitPrice: 97.490, totalPrice: 97.490 * 225  },
+]
+
 export default function DevisForm({ onPreview }: DevisFormProps) {
   const [formData, setFormData] = useState({
-    clientName: '',
-    clientEmail: '',
-    clientPhone: '',
-    clientAddress: '',
+    clientName:    'AL THIMAR AL LIBNANIA FOODSTUFF TRADING LLC',
+    clientAddress: 'UAE, SHARJAH, TAAWON MAIN ROAD, BESIDE PULMAN HOTEL, AL SAAD 1 TOWER',
+    clientPhone:   '00971-505188085 / 00962796986900',
+    clientEmail:   'sales@thimarlibnan.ae / Export.manager@setalkel.com',
     invoiceNumber: '',
-    items: [] as LineItem[],
-    currency: 'USD' as 'EUR' | 'USD',
-    transportFee: 0,
-    page2Text: DEFAULT_PAGE2_TEXT,
+    items:         DEFAULT_ITEMS,
+    currency:      'USD' as 'EUR' | 'USD',
+    transportFee:  0,
+    page2Text:     DEFAULT_PAGE2_TEXT,
   })
 
-  // Add item
   const addItem = () => {
-    const defaultContenance = 'ml1000'
-    const product = CONTENANCES.find(c => c.id === defaultContenance)!
-    const qty = UNITS_PER_PALLET[defaultContenance] ?? 1
-    const newItem: LineItem = {
-      id: `item-${Date.now()}`,
-      contenance: defaultContenance,
-      conditionnement: 'verre',
-      quantity: qty,
-      unitPrice: product.price,
-      totalPrice: product.price * qty,
-    }
-    setFormData(prev => ({ ...prev, items: [...prev.items, newItem] }))
+    setFormData(prev => ({
+      ...prev,
+      items: [...prev.items, {
+        id: `item-${Date.now()}`,
+        contenance: 'ml1000',
+        conditionnement: 'verre',
+        quantity: 1,
+        unitPrice: 5.846,
+        totalPrice: 5.846,
+      }],
+    }))
   }
 
-  // Remove item
-  const removeItem = (id: string) => {
+  const removeItem = (id: string) =>
     setFormData(prev => ({ ...prev, items: prev.items.filter(i => i.id !== id) }))
-  }
 
-  // Update item field
   const updateItem = (id: string, field: keyof LineItem, value: any) => {
     setFormData(prev => ({
       ...prev,
@@ -137,7 +116,6 @@ export default function DevisForm({ onPreview }: DevisFormProps) {
         if (field === 'contenance') {
           const product = CONTENANCES.find(c => c.id === value)
           if (product) updated.unitPrice = product.price
-          updated.quantity = UNITS_PER_PALLET[value as string] ?? 1
         }
         updated.totalPrice = updated.unitPrice * updated.quantity
         return updated
@@ -145,22 +123,10 @@ export default function DevisForm({ onPreview }: DevisFormProps) {
     }))
   }
 
-  // Set palette quantity
-  const setPaletteQty = (id: string, units: number) => {
-    setFormData(prev => ({
-      ...prev,
-      items: prev.items.map(item => {
-        if (item.id !== id) return item
-        return { ...item, quantity: units, totalPrice: item.unitPrice * units }
-      }),
-    }))
-  }
-
-  // Calculate totals
   const subtotal = formData.items.reduce((s, i) => s + i.totalPrice, 0)
   const grandTotal = subtotal + formData.transportFee
+  const cSym = formData.currency === 'USD' ? '$' : '€'
 
-  // Inject payment amounts into page2 text
   const resolvedPage2Text = formData.page2Text
     .replace('{30_PERCENT}', `→ ${formData.currency} ${(grandTotal * 0.3).toFixed(2)}`)
     .replace('{70_PERCENT}', `→ ${formData.currency} ${(grandTotal * 0.7).toFixed(2)}`)
@@ -176,52 +142,48 @@ export default function DevisForm({ onPreview }: DevisFormProps) {
     })
   }
 
-  const inputClass = "w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm"
-  const labelClass = "block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide"
+  const inp = "w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-amber-500 focus:border-transparent text-sm"
+  const lbl = "block text-xs font-semibold text-gray-600 mb-1 uppercase tracking-wide"
 
   return (
     <div className="space-y-8">
 
-      {/* ── Client Information ── */}
+      {/* ── Client ── */}
       <section>
-        <h2 className="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-amber-500">
-          Client Details
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div>
-            <label className={labelClass}>Client / Company Name *</label>
+        <h2 className="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-amber-500">Client Details</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="md:col-span-2">
+            <label className={lbl}>Client / Company Name *</label>
             <input type="text" value={formData.clientName}
               onChange={e => setFormData(p => ({ ...p, clientName: e.target.value }))}
-              className={inputClass} placeholder="Company name" />
+              className={inp} />
           </div>
-          <div>
-            <label className={labelClass}>Address</label>
+          <div className="md:col-span-2">
+            <label className={lbl}>Address</label>
             <input type="text" value={formData.clientAddress}
               onChange={e => setFormData(p => ({ ...p, clientAddress: e.target.value }))}
-              className={inputClass} placeholder="Full address" />
+              className={inp} />
           </div>
           <div>
-            <label className={labelClass}>Email</label>
-            <input type="email" value={formData.clientEmail}
-              onChange={e => setFormData(p => ({ ...p, clientEmail: e.target.value }))}
-              className={inputClass} placeholder="email@company.com" />
-          </div>
-          <div>
-            <label className={labelClass}>Phone</label>
+            <label className={lbl}>Phone</label>
             <input type="tel" value={formData.clientPhone}
               onChange={e => setFormData(p => ({ ...p, clientPhone: e.target.value }))}
-              className={inputClass} placeholder="+971 50 000 0000" />
+              className={inp} />
           </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className={labelClass}>Invoice Number</label>
+            <label className={lbl}>Email</label>
+            <input type="text" value={formData.clientEmail}
+              onChange={e => setFormData(p => ({ ...p, clientEmail: e.target.value }))}
+              className={inp} />
+          </div>
+          <div>
+            <label className={lbl}>Invoice Number</label>
             <input type="text" value={formData.invoiceNumber}
               onChange={e => setFormData(p => ({ ...p, invoiceNumber: e.target.value }))}
-              className={inputClass} placeholder="07/2026" />
+              className={inp} placeholder="07/2026" />
           </div>
           <div>
-            <label className={labelClass}>Currency</label>
+            <label className={lbl}>Currency</label>
             <div className="flex gap-4 mt-2">
               {(['USD', 'EUR'] as const).map(c => (
                 <label key={c} className="flex items-center cursor-pointer">
@@ -236,7 +198,7 @@ export default function DevisForm({ onPreview }: DevisFormProps) {
         </div>
       </section>
 
-      {/* ── Articles ── */}
+      {/* ── Products ── */}
       <section>
         <div className="flex justify-between items-center mb-4 pb-2 border-b-2 border-amber-500">
           <h2 className="text-lg font-bold text-gray-800">Products</h2>
@@ -246,149 +208,106 @@ export default function DevisForm({ onPreview }: DevisFormProps) {
           </button>
         </div>
 
-        {formData.items.length === 0 ? (
-          <div className="text-center py-10 text-gray-400 border-2 border-dashed border-gray-200 rounded-lg">
-            No products yet. Click &quot;Add product&quot; to begin.
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {formData.items.map((item, index) => {
-              const paletteOpts = getPaletteOptions(item.contenance)
-              const currentPalettes = getPaletteCount(item.contenance, item.quantity)
-              return (
-                <div key={item.id} className="border border-gray-200 rounded-xl p-4 bg-gray-50 hover:shadow-md transition-shadow">
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-7 h-7 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-bold text-xs">
-                      {index + 1}
-                    </div>
-                    <div className="flex-1 space-y-3">
-                      {/* Row 1 */}
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <div>
-                          <label className={labelClass}>Volume</label>
-                          <select value={item.contenance}
-                            onChange={e => updateItem(item.id, 'contenance', e.target.value)}
-                            className={inputClass}>
-                            {CONTENANCES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-                          </select>
-                        </div>
-                        <div>
-                          <label className={labelClass}>Packaging</label>
-                          <select value={item.conditionnement}
-                            onChange={e => updateItem(item.id, 'conditionnement', e.target.value)}
-                            className={inputClass}>
-                            {CONDITIONNEMENTS.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
-                          </select>
-                        </div>
-                        <div>
-                          <label className={labelClass}>Unit Price ({formData.currency})</label>
-                          <input type="number" step="0.001" value={item.unitPrice}
-                            onChange={e => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                            className={inputClass} />
-                        </div>
-                        <div>
-                          <label className={labelClass}>Line Total</label>
-                          <div className="px-3 py-2 bg-white border border-gray-200 rounded-md text-sm font-bold text-amber-700">
-                            {formData.currency === 'USD' ? '$' : '€'} {item.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                          </div>
-                        </div>
-                      </div>
+        <div className="space-y-3">
+          {formData.items.map((item, index) => (
+            <div key={item.id} className="border border-gray-200 rounded-xl p-4 bg-gray-50 hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 w-7 h-7 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-bold text-xs mt-1">
+                  {index + 1}
+                </div>
 
-                      {/* Row 2: palette picker */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
-                        <div>
-                          <label className={labelClass}>
-                            Palettes — quick select
-                            {currentPalettes !== null && Number.isInteger(currentPalettes) && (
-                              <span className="ml-2 text-amber-600 font-bold normal-case">
-                                ({currentPalettes} pallet{currentPalettes !== 1 ? 's' : ''} selected)
-                              </span>
-                            )}
-                          </label>
-                          <div className="flex flex-wrap gap-1.5">
-                            {paletteOpts.map(opt => (
-                              <button key={opt.palettes}
-                                onClick={() => setPaletteQty(item.id, opt.units)}
-                                className={`px-3 py-1 text-xs rounded-full border font-semibold transition-colors ${
-                                  item.quantity === opt.units
-                                    ? 'bg-amber-600 text-white border-amber-600'
-                                    : 'border-gray-300 text-gray-500 hover:border-amber-500 hover:text-amber-700'
-                                }`}>
-                                {opt.palettes}P
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <label className={labelClass}>Quantity (units)</label>
-                          <input type="number" min="1" value={item.quantity}
-                            onChange={e => updateItem(item.id, 'quantity', parseInt(e.target.value) || 1)}
-                            className={inputClass} />
-                        </div>
-                      </div>
+                <div className="flex-1 grid grid-cols-2 md:grid-cols-5 gap-3">
+                  <div>
+                    <label className={lbl}>Volume</label>
+                    <select value={item.contenance}
+                      onChange={e => updateItem(item.id, 'contenance', e.target.value)}
+                      className={inp}>
+                      {CONTENANCES.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className={lbl}>Packaging</label>
+                    <select value={item.conditionnement}
+                      onChange={e => updateItem(item.id, 'conditionnement', e.target.value)}
+                      className={inp}>
+                      {CONDITIONNEMENTS.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className={lbl}>Quantity</label>
+                    <input type="number" min="1" value={item.quantity}
+                      onChange={e => updateItem(item.id, 'quantity', parseInt(e.target.value) || 1)}
+                      className={inp} />
+                  </div>
+                  <div>
+                    <label className={lbl}>Unit Price ({formData.currency})</label>
+                    <input type="number" step="0.001" value={item.unitPrice}
+                      onChange={e => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
+                      className={inp} />
+                  </div>
+                  <div>
+                    <label className={lbl}>Line Total</label>
+                    <div className="px-3 py-2 bg-white border border-gray-200 rounded-md text-sm font-bold text-amber-700">
+                      {cSym} {item.totalPrice.toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </div>
-
-                    <button onClick={() => removeItem(item.id)}
-                      className="flex-shrink-0 text-red-400 hover:text-red-600 p-1.5 transition-colors" title="Remove">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                      </svg>
-                    </button>
                   </div>
                 </div>
-              )
-            })}
-          </div>
-        )}
+
+                <button onClick={() => removeItem(item.id)}
+                  className="flex-shrink-0 text-red-400 hover:text-red-600 p-1.5 transition-colors mt-1">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* ── Transport fee ── */}
       <section>
-        <h2 className="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-amber-500">
-          Transport Fees
-        </h2>
+        <h2 className="text-lg font-bold text-gray-800 mb-4 pb-2 border-b-2 border-amber-500">Transport Fees</h2>
         <div className="max-w-xs">
-          <label className={labelClass}>Transport fee ({formData.currency}) — leave 0 to omit</label>
+          <label className={lbl}>Amount ({formData.currency}) — leave 0 to omit</label>
           <input type="number" step="0.01" min="0" value={formData.transportFee}
             onChange={e => setFormData(p => ({ ...p, transportFee: parseFloat(e.target.value) || 0 }))}
-            className={inputClass} />
+            className={inp} />
         </div>
       </section>
 
-      {/* ── Totals summary ── */}
-      {formData.items.length > 0 && (
-        <div className="bg-amber-50 rounded-xl p-5 border-2 border-amber-200">
-          <div className="max-w-sm ml-auto space-y-2">
-            <div className="flex justify-between text-gray-700 text-sm">
-              <span>Subtotal (products):</span>
-              <span className="font-semibold">{formData.currency === 'USD' ? '$' : '€'} {subtotal.toLocaleString('en-US', { minimumFractionDigits: 3 })}</span>
-            </div>
-            {formData.transportFee > 0 && (
-              <div className="flex justify-between text-gray-700 text-sm">
-                <span>Transport fees:</span>
-                <span className="font-semibold">{formData.currency === 'USD' ? '$' : '€'} {formData.transportFee.toLocaleString('en-US', { minimumFractionDigits: 3 })}</span>
-              </div>
-            )}
-            <div className="flex justify-between text-lg font-bold text-amber-800 pt-2 border-t-2 border-amber-300">
-              <span>Grand Total EXW:</span>
-              <span>{formData.currency === 'USD' ? '$' : '€'} {grandTotal.toLocaleString('en-US', { minimumFractionDigits: 3 })}</span>
-            </div>
-            {grandTotal > 0 && (
-              <div className="text-xs text-gray-500 pt-1 border-t border-amber-200 space-y-0.5">
-                <div className="flex justify-between">
-                  <span>30% advance (T/T):</span>
-                  <span>{formData.currency === 'USD' ? '$' : '€'} {(grandTotal * 0.3).toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>70% L/C at sight:</span>
-                  <span>{formData.currency === 'USD' ? '$' : '€'} {(grandTotal * 0.7).toFixed(2)}</span>
-                </div>
-              </div>
-            )}
+      {/* ── Totals ── */}
+      <div className="bg-amber-50 rounded-xl p-5 border-2 border-amber-200">
+        <div className="max-w-sm ml-auto space-y-2">
+          <div className="flex justify-between text-gray-700 text-sm">
+            <span>Subtotal:</span>
+            <span className="font-semibold">{cSym} {subtotal.toLocaleString('en-US', { minimumFractionDigits: 3 })}</span>
           </div>
+          {formData.transportFee > 0 && (
+            <div className="flex justify-between text-gray-700 text-sm">
+              <span>Transport fees:</span>
+              <span className="font-semibold">{cSym} {formData.transportFee.toLocaleString('en-US', { minimumFractionDigits: 3 })}</span>
+            </div>
+          )}
+          <div className="flex justify-between text-lg font-bold text-amber-800 pt-2 border-t-2 border-amber-300">
+            <span>Grand Total EXW:</span>
+            <span>{cSym} {grandTotal.toLocaleString('en-US', { minimumFractionDigits: 3 })}</span>
+          </div>
+          {grandTotal > 0 && (
+            <div className="text-xs text-gray-500 pt-1 border-t border-amber-200 space-y-0.5">
+              <div className="flex justify-between">
+                <span>30% advance (T/T):</span>
+                <span>{cSym} {(grandTotal * 0.3).toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>70% L/C at sight:</span>
+                <span>{cSym} {(grandTotal * 0.7).toFixed(2)}</span>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* ── Page 2 text ── */}
       <section>
@@ -396,9 +315,10 @@ export default function DevisForm({ onPreview }: DevisFormProps) {
           Page 2 — Payment Terms &amp; Conditions
         </h2>
         <p className="text-xs text-gray-500 mb-3">
-          Edit the text below. Use ALL CAPS lines for section titles, <code className="bg-gray-100 px-1">•</code> for bullet points,
-          <code className="bg-gray-100 px-1 ml-1">→</code> for amount lines.
-          <code className="bg-gray-100 px-1 ml-1">{'{30_PERCENT}'}</code> and <code className="bg-gray-100 px-1">{'{70_PERCENT}'}</code> are auto-replaced with calculated amounts.
+          ALL CAPS lines → section titles &nbsp;|&nbsp;
+          <code className="bg-gray-100 px-1">•</code> bullet &nbsp;|&nbsp;
+          <code className="bg-gray-100 px-1">→</code> amount line &nbsp;|&nbsp;
+          <code className="bg-gray-100 px-1">{'{30_PERCENT}'}</code> and <code className="bg-gray-100 px-1">{'{70_PERCENT}'}</code> auto-calculated
         </p>
         <textarea
           value={formData.page2Text}
@@ -407,10 +327,8 @@ export default function DevisForm({ onPreview }: DevisFormProps) {
           className="w-full px-3 py-3 border border-gray-300 rounded-lg font-mono text-xs leading-relaxed focus:ring-2 focus:ring-amber-500 focus:border-transparent resize-y"
         />
         <div className="mt-2 flex justify-end">
-          <button
-            onClick={() => setFormData(p => ({ ...p, page2Text: DEFAULT_PAGE2_TEXT }))}
-            className="text-xs text-gray-500 hover:text-amber-700 underline"
-          >
+          <button onClick={() => setFormData(p => ({ ...p, page2Text: DEFAULT_PAGE2_TEXT }))}
+            className="text-xs text-gray-500 hover:text-amber-700 underline">
             Reset to default text
           </button>
         </div>
@@ -418,8 +336,7 @@ export default function DevisForm({ onPreview }: DevisFormProps) {
 
       {/* ── Submit ── */}
       <div className="flex justify-end pt-2">
-        <button
-          onClick={handlePreview}
+        <button onClick={handlePreview}
           disabled={!formData.clientName || formData.items.length === 0}
           className="bg-amber-600 hover:bg-amber-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white px-10 py-3 rounded-lg font-bold text-sm transition-colors shadow-md">
           Preview Proforma →

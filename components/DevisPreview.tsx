@@ -19,17 +19,20 @@ const VOL_LABEL: Record<string, string> = {
   ml250: '250ml', ml500: '500ml', ml750: '750ml', ml1000: '1L',
   l3: '3L', l5: '5L', l10: '10L', l15: '15L', l20: '20L',
 }
-const UNITS_PER_PALLET: Record<string, number> = {
-  ml250: 2016, ml500: 1248, ml750: 1152, ml1000: 1008,
-  l3: 300, l5: 400, l10: 384, l20: 495,
+
+// ── Hardcoded palette label overrides ────────────────────
+const PALETTE_OVERRIDES: Record<string, string> = {
+  'ml1000-5040': '5040 (5 Pallets)',
+  'l5-3240':     '3240 (15 Pallets)',
+  'l20-225':     '225 (2 Pallets)',
 }
-const paletteLabel = (contenance: string, qty: number) => {
-  const upp = UNITS_PER_PALLET[contenance]
-  if (!upp) return String(qty)
-  const p = qty / upp
-  const r = Math.round(p * 2) / 2
-  return `${qty} (${r} Pallet${r !== 1 ? 's' : ''})`
+
+const paletteLabel = (contenance: string, qty: number): string => {
+  const key = `${contenance}-${qty}`
+  if (PALETTE_OVERRIDES[key]) return PALETTE_OVERRIDES[key]
+  return String(qty)
 }
+
 const fmtNum = (n: number) =>
   n.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 })
 
@@ -62,7 +65,6 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
 
   return (
     <div className="space-y-6">
-      {/* Preview header */}
       <div className="text-center">
         <h2 className="text-2xl font-bold text-gray-800">Proforma Preview</h2>
         <p className="text-gray-500 text-sm mt-1">Review before downloading</p>
@@ -73,43 +75,32 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
         {([1, 2] as const).map(p => (
           <button key={p} onClick={() => setActivePage(p)}
             className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors ${
-              activePage === p
-                ? 'bg-amber-600 text-white'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              activePage === p ? 'bg-amber-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}>
             Page {p}/2
           </button>
         ))}
       </div>
 
-      {/* ──────────────────────────────────────────────────────
-          PAGE 1 PREVIEW
-      ────────────────────────────────────────────────────── */}
+      {/* PAGE 1 */}
       {activePage === 1 && (
         <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-white">
-          {/* Simulated header */}
           <div className="bg-amber-500 px-6 py-4 flex items-center gap-4">
             <div className="w-14 h-14 bg-white rounded flex items-center justify-center">
               <img src="/logo/logo_carthage_crown_page-0001.jpg" alt="Logo" className="w-12 h-12 object-contain" />
             </div>
-            <div className="flex-1">
-              <div className="text-white font-bold text-lg tracking-wide">CARTHAGE CROWN OLIVE OIL</div>
-            </div>
+            <div className="text-white font-bold text-lg tracking-wide">CARTHAGE CROWN OLIVE OIL</div>
           </div>
 
           <div className="px-6 py-5">
-            {/* Invoice title row */}
             <div className="flex justify-between items-start mb-5">
-              <div>
-                <div className="font-bold text-gray-900 text-base">PROFORMA INVOICE N° : {invoiceNum}</div>
-              </div>
+              <div className="font-bold text-gray-900 text-base">PROFORMA INVOICE N° : {invoiceNum}</div>
               <div className="text-right text-sm text-gray-500">
                 <div>Date: {fmtDate(date)}</div>
                 <div>Page : 1/2</div>
               </div>
             </div>
 
-            {/* Client */}
             <div className="mb-4">
               <div className="text-xs font-bold text-gray-900 underline mb-2 uppercase tracking-wide">Client Details</div>
               <div className="text-sm text-gray-700 space-y-0.5">
@@ -120,13 +111,11 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
               </div>
             </div>
 
-            {/* Subject */}
             <div className="mb-4">
               <div className="text-xs font-bold text-gray-900 underline mb-1 uppercase tracking-wide">Subject :</div>
               <div className="text-sm text-gray-700">Price offer - Extra Virgin Olive Oil</div>
             </div>
 
-            {/* Table */}
             <div className="overflow-x-auto mb-4">
               <table className="min-w-full border border-gray-300 text-sm">
                 <thead>
@@ -158,8 +147,7 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
                       <td className="px-3 py-3 text-right text-xs font-mono">{fmtNum(devis.transportFee)}</td>
                     </tr>
                   )}
-                  {/* Grand total */}
-                  <tr className="bg-white">
+                  <tr>
                     <td colSpan={5} className="px-3 py-3 text-center text-sm font-bold text-gray-900 border-r border-gray-300">
                       GRAND TOTAL EXW ({devis.currency})
                     </td>
@@ -172,7 +160,6 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
             </div>
           </div>
 
-          {/* Footer */}
           <div className="bg-amber-500 px-6 py-2 flex justify-between items-center">
             <span className="text-xs font-bold text-amber-900">M.F.: 1858707 C/N/M/000 — R.C.: C0870132024</span>
             <span className="text-xs font-bold text-amber-900">france@carthagecrown.com</span>
@@ -180,23 +167,17 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
         </div>
       )}
 
-      {/* ──────────────────────────────────────────────────────
-          PAGE 2 PREVIEW
-      ────────────────────────────────────────────────────── */}
+      {/* PAGE 2 */}
       {activePage === 2 && (
         <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm bg-white">
-          {/* Header */}
           <div className="bg-amber-500 px-6 py-4 flex items-center gap-4">
             <div className="w-14 h-14 bg-white rounded flex items-center justify-center">
               <img src="/logo/logo_carthage_crown_page-0001.jpg" alt="Logo" className="w-12 h-12 object-contain" />
             </div>
-            <div className="flex-1">
-              <div className="text-white font-bold text-lg tracking-wide">CARTHAGE CROWN OLIVE OIL</div>
-            </div>
+            <div className="text-white font-bold text-lg tracking-wide">CARTHAGE CROWN OLIVE OIL</div>
           </div>
 
           <div className="px-6 py-5">
-            {/* Invoice sub-title */}
             <div className="flex justify-between items-start mb-5">
               <div className="font-bold text-gray-900 text-base">PROFORMA INVOICE</div>
               <div className="text-right text-sm text-gray-500">
@@ -205,12 +186,10 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
               </div>
             </div>
 
-            {/* Total amount */}
             <div className="text-base font-bold text-gray-900 mb-5">
               Total Amount: {devis.currency} {fmtNum(devis.grandTotal)}
             </div>
 
-            {/* Rendered page 2 text */}
             <div className="space-y-0.5 text-sm text-gray-800">
               {devis.page2Text.split('\n').map((line, i) => {
                 const trimmed = line.trim()
@@ -231,29 +210,18 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
                 }
                 if (trimmed.includes(':')) {
                   const idx = trimmed.indexOf(':')
-                  const lbl = trimmed.substring(0, idx + 1)
-                  const val = trimmed.substring(idx + 1)
                   return (
                     <div key={i}>
-                      <span className="font-semibold">{lbl}</span>{val}
+                      <span className="font-semibold">{trimmed.substring(0, idx + 1)}</span>
+                      {trimmed.substring(idx + 1)}
                     </div>
                   )
                 }
                 return <div key={i}>{trimmed}</div>
               })}
             </div>
-
-            {/* Stamp placeholder */}
-            <div className="flex justify-end mt-8">
-              <div className="w-36 h-16 border-2 border-amber-400 rounded flex flex-col items-center justify-center text-center">
-                <div className="text-xs font-bold text-amber-800">CARTHAGE CROWN OLIVE OIL France</div>
-                <div className="text-xs text-gray-500 mt-0.5">Jebeniana — Sfax, Tunisia</div>
-                <div className="text-xs text-gray-500">+33 7 59 52 75 90</div>
-              </div>
-            </div>
           </div>
 
-          {/* Footer */}
           <div className="bg-amber-500 px-6 py-2 flex justify-between items-center">
             <span className="text-xs font-bold text-amber-900">M.F.: 1858707 C/N/M/000 — R.C.: C0870132024</span>
             <span className="text-xs font-bold text-amber-900">france@carthagecrown.com</span>
