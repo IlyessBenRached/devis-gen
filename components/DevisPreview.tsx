@@ -226,6 +226,14 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
                 return <div key={i}>{trimmed}</div>
               })}
             </div>
+            {/* Stamp */}
+            <div className="flex justify-end mt-6">
+              <img
+                src="/stamp_carthage_crown.png"
+                alt="Stamp"
+                className="w-32 h-20 object-contain"
+              />
+            </div>
           </div>
 
           <div className="bg-amber-500 px-6 py-2 flex justify-between items-center">
@@ -235,7 +243,6 @@ export default function DevisPreview({ devis, onBack, onReset }: DevisPreviewPro
         </div>
       )}
 
-      {/* Actions */}
       <div className="flex justify-between gap-4 pt-2">
         <button onClick={onBack}
           className="px-6 py-3 bg-gray-600 text-white rounded-lg font-semibold hover:bg-gray-700 transition text-sm">

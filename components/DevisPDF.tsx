@@ -411,6 +411,14 @@ export default function DevisPDF({ devis }: { devis: DevisData }) {
           {renderPage2(devis.page2Text)}
         </View>
 
+        {/* Stamp — bottom right */}
+        <View style={{ marginTop: 24, alignItems: "flex-end" }}>
+          <Image
+            src="/stamp_carthage_crown.png"
+            style={{ width: 130, height: 80, opacity: 1 }}
+          />
+        </View>
+
         <Footer />
       </Page>
     </Document>
