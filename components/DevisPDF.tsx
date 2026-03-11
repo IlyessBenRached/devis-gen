@@ -11,322 +11,203 @@ import {
   Image,
 } from "@react-pdf/renderer";
 
-// Enhanced color palette - elegant olive & gold
 const colors = {
   primaryGreen: "#2d5016",
-  secondaryGreen: "#8b9a46",
   accentGold: "#c9a961",
   darkOlive: "#3a3a2a",
-  lightBg: "#f5f5f0",
   white: "#ffffff",
-  grey: "#666666",
-  lightGrey: "#e5e7eb",
+  grey: "#555555",
+  lightGrey: "#cccccc",
+  black: "#1a1a1a",
 };
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
   page: {
-    padding: 28,
+    padding: 36,
+    paddingBottom: 60,
     fontFamily: "Helvetica",
     fontSize: 9,
-    lineHeight: 1.35,
+    lineHeight: 1.4,
     backgroundColor: colors.white,
   },
 
-  // Header Section
-  headerContainer: {
+  // HEADER
+  header: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
-    paddingBottom: 6,
+    marginBottom: 14,
+    paddingBottom: 10,
     borderBottomWidth: 2,
     borderBottomColor: colors.accentGold,
   },
-  logoSection: {
-    width: "22%",
+  logo: { width: 75, height: 75, marginRight: 16 },
+  headerRight: { flex: 1 },
+  goldenBanner: {
+    backgroundColor: colors.accentGold,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginBottom: 6,
   },
-  logo: {
-    width: 60,
-    height: 60,
-  },
-  companyInfoSection: {
-    width: "73%",
-    alignItems: "flex-end",
-  },
-  companyName: {
+  goldenBannerText: {
     fontSize: 15,
     fontWeight: "bold",
-    color: colors.primaryGreen,
-    marginBottom: 2,
-    letterSpacing: 0.4,
-  },
-  companySubtitle: {
-    fontSize: 10,
-    fontWeight: "bold",
-    color: colors.secondaryGreen,
-    marginBottom: 3,
-  },
-  companyBanner: {
-    backgroundColor: colors.accentGold,
-    paddingVertical: 3,
-    paddingHorizontal: 10,
-    marginTop: 2,
-  },
-  bannerText: {
-    fontSize: 8,
-    color: colors.darkOlive,
-    fontWeight: "bold",
-  },
-
-  // Title Section
-  titleSection: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 6,
-    marginBottom: 6,
-  },
-  offerTitle: {
-    fontSize: 13,
-    fontWeight: "bold",
-    color: colors.primaryGreen,
-    textTransform: "uppercase",
-    letterSpacing: 0.8,
-  },
-  dateText: {
-    fontSize: 8,
-    color: colors.grey,
-  },
-
-  // Object Section
-  objectSection: {
-    marginBottom: 6,
-    padding: 6,
-    backgroundColor: colors.lightBg,
-    borderLeftWidth: 2,
-    borderLeftColor: colors.accentGold,
-  },
-  objectTitle: {
-    fontSize: 9,
-    fontWeight: "bold",
-    color: colors.darkOlive,
-    marginBottom: 2,
-  },
-  objectText: {
-    fontSize: 8,
-    color: colors.grey,
-    lineHeight: 1.25,
-  },
-
-  // Client Section
-  clientSection: {
-    marginBottom: 8,
-  },
-  sectionHeader: {
-    fontSize: 9,
-    fontWeight: "bold",
-    color: colors.primaryGreen,
-    marginBottom: 4,
-    paddingBottom: 2,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.lightGrey,
-  },
-  clientRow: {
-    flexDirection: "row",
-    marginBottom: 2,
-  },
-  clientLabel: {
-    fontWeight: "bold",
-    width: 70,
-    fontSize: 8,
-    color: colors.darkOlive,
-  },
-  clientValue: {
-    fontSize: 8,
-    color: colors.grey,
-    flex: 1,
-  },
-  clientInline: {
-    fontSize: 8,
-    color: colors.grey,
-    lineHeight: 1.4,
-  },
-
-  // Product Section
-  productHeader: {
-    fontSize: 10,
-    fontWeight: "bold",
-    color: colors.primaryGreen,
-    marginTop: 6,
-    marginBottom: 5,
-    textAlign: "center",
-    textTransform: "uppercase",
+    color: colors.white,
     letterSpacing: 0.5,
   },
-
-  // Table
-  table: {
-    marginTop: 4,
-    marginBottom: 8,
-  },
-  tableHeader: {
-    flexDirection: "row",
-    backgroundColor: colors.primaryGreen,
-    paddingVertical: 5,
-    paddingHorizontal: 4,
-    borderTopLeftRadius: 2,
-    borderTopRightRadius: 2,
-  },
-  tableHeaderText: {
-    fontSize: 8,
-    fontWeight: "bold",
-    color: colors.white,
-    textAlign: "center",
-  },
-  tableRow: {
-    flexDirection: "row",
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.lightGrey,
-    paddingVertical: 5,
-    paddingHorizontal: 4,
-  },
-  tableRowAlt: {
-    backgroundColor: colors.lightBg,
-  },
-  tableCell: {
-    fontSize: 8,
-    color: colors.darkOlive,
-    textAlign: "center",
-  },
-  tableCellLeft: {
-    textAlign: "left",
-  },
-  tableCellRight: {
-    textAlign: "right",
-  },
-
-  // Column widths
-  colRef: { width: "8%" },
-  colDesignation: { width: "35%" },
-  colConditionnement: { width: "22%" },
-  colContenance: { width: "15%" },
-  colPrice: { width: "20%" },
-
-  // Totals
-  totalsContainer: {
-    marginTop: 8,
-    marginBottom: 8,
-    paddingTop: 6,
-    borderTopWidth: 2,
-    borderTopColor: colors.primaryGreen,
-  },
-  totalRow: {
+  headerMeta: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 3,
-    paddingHorizontal: 6,
+    alignItems: "flex-start",
   },
-  totalLabel: {
-    fontSize: 9,
-    fontWeight: "bold",
-    color: colors.darkOlive,
-  },
-  totalValue: {
-    fontSize: 9,
-    fontWeight: "bold",
-    color: colors.primaryGreen,
-  },
-  grandTotal: {
-    fontSize: 10,
-    marginTop: 2,
-  },
+  invoiceTitle: { fontSize: 12, fontWeight: "bold", color: colors.black },
+  invoiceMetaRight: { textAlign: "right" },
+  metaText: { fontSize: 8.5, color: colors.grey, lineHeight: 1.5 },
 
-  // Conditions Section
-  conditionsContainer: {
-    marginTop: 8,
-    padding: 6,
-    backgroundColor: colors.lightBg,
-    borderRadius: 2,
-  },
-  conditionsTitle: {
+  // CLIENT
+  sectionTitle: {
     fontSize: 9,
     fontWeight: "bold",
-    color: colors.primaryGreen,
+    color: colors.black,
+    textDecoration: "underline",
     marginBottom: 4,
-    textTransform: "uppercase",
   },
-  conditionRow: {
+  clientBlock: { marginBottom: 10 },
+  clientLine: { fontSize: 8.5, color: colors.black, marginBottom: 2 },
+  bold: { fontWeight: "bold" },
+
+  // SUBJECT
+  subjectBlock: { marginBottom: 10 },
+  subjectText: { fontSize: 8.5, color: colors.black },
+
+  // TABLE
+  table: {
+    borderWidth: 0.75,
+    borderColor: colors.lightGrey,
+    marginBottom: 6,
+  },
+  tRow: {
     flexDirection: "row",
-    marginBottom: 2,
+    borderBottomWidth: 0.75,
+    borderBottomColor: colors.lightGrey,
   },
-  conditionLabel: {
+  tRowLast: { flexDirection: "row" },
+  tCell: {
+    fontSize: 8.5,
+    color: colors.black,
+    paddingVertical: 6,
+    paddingHorizontal: 4,
+    borderRightWidth: 0.75,
+    borderRightColor: colors.lightGrey,
+    justifyContent: "center",
+  },
+  tCellNoBorder: {
+    fontSize: 8.5,
+    color: colors.black,
+    paddingVertical: 6,
+    paddingHorizontal: 4,
+    justifyContent: "center",
+  },
+  tHCell: {
     fontSize: 8,
     fontWeight: "bold",
-    width: 65,
-    color: colors.darkOlive,
+    color: colors.black,
+    paddingVertical: 5,
+    paddingHorizontal: 4,
+    borderRightWidth: 0.75,
+    borderRightColor: colors.lightGrey,
+    textAlign: "center",
   },
-  conditionValue: {
+  tHCellNoBorder: {
     fontSize: 8,
-    color: colors.grey,
+    fontWeight: "bold",
+    color: colors.black,
+    paddingVertical: 5,
+    paddingHorizontal: 4,
+    textAlign: "center",
+  },
+  tText: { textAlign: "center", fontSize: 8.5 },
+
+  cRef: { width: "6%" },
+  cPack: { width: "17%" },
+  cVol: { width: "10%" },
+  cQty: { width: "21%" },
+  cPrice: { width: "14%" },
+  cTotal: { width: "14%" },
+
+  gtLabelCell: {
     flex: 1,
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+    borderRightWidth: 0.75,
+    borderRightColor: colors.lightGrey,
+    justifyContent: "center",
   },
-
-  // Banking Section
-  bankingContainer: {
-    marginTop: 8,
-    padding: 6,
-    backgroundColor: colors.white,
-    borderWidth: 0.5,
-    borderColor: colors.lightGrey,
-    borderRadius: 2,
+  gtLabel: { fontSize: 9, fontWeight: "bold", color: colors.black, textAlign: "center" },
+  gtValueCell: {
+    width: "28%",
+    paddingVertical: 7,
+    paddingHorizontal: 8,
+    justifyContent: "center",
   },
+  gtValue: { fontSize: 9, fontWeight: "bold", color: colors.black, textAlign: "right" },
 
-  // Footer
+  // FOOTER
   footer: {
-    marginTop: 12,
-    paddingTop: 8,
-    borderTopWidth: 2,
-    borderTopColor: colors.accentGold,
+    position: "absolute",
+    bottom: 20,
+    left: 36,
+    right: 36,
   },
-  footerContent: {
+  footerBar: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: colors.primaryGreen,
-    padding: 8,
-    borderRadius: 3,
+    backgroundColor: colors.accentGold,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
-  footerLeft: {
-    flex: 1,
-  },
-  footerRight: {
-    alignItems: "flex-end",
-  },
-  footerText: {
-    fontSize: 7,
-    color: colors.white,
-    marginBottom: 1,
-    lineHeight: 1.3,
-  },
-  footerBold: {
-    fontSize: 8,
+  footerText: { fontSize: 7.5, color: colors.darkOlive, fontWeight: "bold" },
+
+  // PAGE 2
+  p2TotalAmount: {
+    fontSize: 11,
     fontWeight: "bold",
-    color: colors.accentGold,
-    marginBottom: 1,
+    color: colors.black,
+    marginBottom: 14,
   },
-  footerEmail: {
-    fontSize: 7,
-    color: colors.accentGold,
-    textDecoration: "none",
+  p2Section: { marginBottom: 0 },
+  p2SectionTitle: {
+    fontSize: 9,
+    fontWeight: "bold",
+    color: colors.black,
+    textDecoration: "underline",
+    marginBottom: 4,
+    marginTop: 10,
   },
-  companyRegistration: {
-    fontSize: 6,
-    color: colors.white,
-    marginTop: 4,
-    textAlign: "center",
+  p2Line: { fontSize: 8.5, color: colors.black, marginBottom: 2, lineHeight: 1.5 },
+  p2Bold: { fontWeight: "bold" },
+  p2Bullet: { flexDirection: "row", marginBottom: 2, paddingLeft: 8 },
+  p2BulletDot: { fontSize: 8.5, color: colors.black, marginRight: 5 },
+  p2BulletTxt: { fontSize: 8.5, color: colors.black, flex: 1, lineHeight: 1.5 },
+  p2Arrow: { fontSize: 8.5, color: colors.black, marginBottom: 2, paddingLeft: 8, fontWeight: "bold" },
+  p2Spacer: { marginBottom: 5 },
+
+  stampSection: { marginTop: 24, alignItems: "flex-end" },
+  stampBox: {
+    width: 140,
+    height: 60,
+    borderWidth: 1.5,
+    borderColor: colors.accentGold,
+    borderRadius: 2,
+    padding: 6,
+    alignItems: "center",
+    justifyContent: "center",
   },
+  stampText: { fontSize: 7.5, color: colors.darkOlive, fontWeight: "bold", textAlign: "center", marginBottom: 2 },
+  stampSub: { fontSize: 6.5, color: colors.grey, textAlign: "center", lineHeight: 1.4 },
 });
 
+// ─── Types ────────────────────────────────────────────────
 interface LineItem {
   id: string;
   contenance: string;
@@ -336,268 +217,238 @@ interface LineItem {
   totalPrice: number;
 }
 
-interface DevisData {
+export interface DevisData {
   clientName: string;
   clientEmail: string;
   clientPhone: string;
+  clientAddress?: string;
   items: LineItem[];
   currency: "EUR" | "USD";
   subtotal: number;
   total: number;
+  transportFee: number;
+  grandTotal: number;
   createdAt: Date;
+  invoiceNumber?: string;
+  page2Text: string;
 }
 
-const getContenanceLabel = (id: string): string => {
-  const labels: Record<string, string> = {
-    ml250: "250 ml",
-    ml500: "500 ml",
-    ml750: "750 ml",
-    ml1000: "1L",
-    l3: "3L",
-    l5: "5L",
-    l10: "10L",
-    l15: "15L",
-    l20: "20L",
-  };
-  return labels[id] || id;
+// ─── Helpers ──────────────────────────────────────────────
+const CONTENANCE_LABEL: Record<string, string> = {
+  ml250: "250ml", ml500: "500ml", ml750: "750ml", ml1000: "1L",
+  l3: "3L", l5: "5L", l10: "10L", l15: "15L", l20: "20L",
+};
+const COND_LABEL: Record<string, string> = {
+  verre: "Glass bottle", metal: "Tin can",
+};
+const UNITS_PER_PALLET: Record<string, number> = {
+  ml250: 2016, ml500: 1248, ml750: 1152, ml1000: 1008,
+  l3: 300, l5: 400, l10: 384, l20: 495,
 };
 
-const getConditionnementLabel = (id: string): string => {
-  const labels: Record<string, string> = {
-    verre: "Bouteille en verre",
-    metal: "Bidon Métallique",
-  };
-  return labels[id] || id;
+const paletteLabel = (contenance: string, qty: number): string => {
+  const upp = UNITS_PER_PALLET[contenance];
+  if (!upp) return String(qty);
+  const p = qty / upp;
+  const r = Math.round(p * 2) / 2;
+  return `${qty} (${r} Pallet${r !== 1 ? "s" : ""})`;
 };
 
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
+
+const fmtNum = (n: number) =>
+  n.toLocaleString("en-US", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+
+// ─── Render Page2 text ────────────────────────────────────
+function renderPage2(text: string) {
+  return text.split("\n").map((raw, i) => {
+    const line = raw.trimEnd();
+    const trimmed = line.trim();
+
+    if (trimmed === "") return <Text key={i} style={s.p2Spacer} />;
+
+    if (trimmed.startsWith("•") || trimmed.startsWith("-")) {
+      return (
+        <View key={i} style={s.p2Bullet}>
+          <Text style={s.p2BulletDot}>•</Text>
+          <Text style={s.p2BulletTxt}>{trimmed.replace(/^[•\-]\s*/, "")}</Text>
+        </View>
+      );
+    }
+
+    if (trimmed.startsWith("→") || trimmed.startsWith("->")) {
+      return <Text key={i} style={s.p2Arrow}>{trimmed}</Text>;
+    }
+
+    // ALL CAPS = section title
+    if (trimmed === trimmed.toUpperCase() && trimmed.length > 2) {
+      return <Text key={i} style={s.p2SectionTitle}>{trimmed}</Text>;
+    }
+
+    // Label: value
+    if (trimmed.includes(":")) {
+      const idx = trimmed.indexOf(":");
+      const lbl = trimmed.substring(0, idx + 1);
+      const val = trimmed.substring(idx + 1);
+      return (
+        <Text key={i} style={s.p2Line}>
+          <Text style={s.p2Bold}>{lbl}</Text>{val}
+        </Text>
+      );
+    }
+
+    return <Text key={i} style={s.p2Line}>{trimmed}</Text>;
+  });
+}
+
+// ─── Footer component ─────────────────────────────────────
+function Footer() {
+  return (
+    <View style={s.footer} fixed>
+      <View style={s.footerBar}>
+        <Text style={s.footerText}>M.F.: 1858707 C/N/M/000 — R.C.: C0870132024</Text>
+        <Link src="mailto:france@carthagecrown.com" style={[s.footerText, { textDecoration: "none" }]}>
+          france@carthagecrown.com
+        </Link>
+      </View>
+    </View>
+  );
+}
+
+// ─── Header component ─────────────────────────────────────
+function Header({ invoiceNum, date, page }: { invoiceNum: string; date: Date; page: number }) {
+  return (
+    <View style={s.header}>
+      <Image src="/logo/logo_carthage_crown_page-0001.jpg" style={s.logo} />
+      <View style={s.headerRight}>
+        <View style={s.goldenBanner}>
+          <Text style={s.goldenBannerText}>CARTHAGE CROWN OLIVE OIL</Text>
+        </View>
+        <View style={s.headerMeta}>
+          <View>
+            {page === 1 ? (
+              <>
+                <Text style={s.invoiceTitle}>PROFORMA INVOICE N° : {invoiceNum}</Text>
+              </>
+            ) : (
+              <Text style={s.invoiceTitle}>PROFORMA INVOICE</Text>
+            )}
+          </View>
+          <View style={s.invoiceMetaRight}>
+            <Text style={s.metaText}>Date: {fmtDate(date)}</Text>
+            <Text style={s.metaText}>Page : {page}/2</Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+// ─── Main export ──────────────────────────────────────────
 export default function DevisPDF({ devis }: { devis: DevisData }) {
   const date = new Date(devis.createdAt);
-  const expiresAt = new Date(date);
-  expiresAt.setDate(date.getDate() + 7);
-
-  const formatDate = (d: Date) => {
-    return d.toLocaleDateString("fr-FR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
-
-  const currencySymbol = devis.currency === "EUR" ? "€" : "$";
+  const cSym = devis.currency === "EUR" ? "€" : "$";
+  const invoiceNum = devis.invoiceNumber ||
+    `${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        {/* Header with Logo */}
-        <View style={styles.headerContainer}>
-          <View style={styles.logoSection}>
-            <Image
-              src="/logo/logo_carthage_crown_page-0001.jpg"
-              style={styles.logo}
-            />
-          </View>
-          <View style={styles.companyInfoSection}>
-            <Text style={styles.companyName}>CARTHAGE CROWN OLIVE OIL</Text>
-            <Text style={styles.companySubtitle}>
-              HUILE D'OLIVE VIERGE EXTRA
-            </Text>
-            <View style={styles.companyBanner}>
-              <Text style={styles.bannerText}>
-                Premium Tunisian Extra Virgin Olive Oil
-              </Text>
-            </View>
-          </View>
-        </View>
+      {/* ════ PAGE 1 ════ */}
+      <Page size="A4" style={s.page}>
+        <Header invoiceNum={invoiceNum} date={date} page={1} />
 
-        {/* Title Section */}
-        <View style={styles.titleSection}>
-          <Text style={styles.offerTitle}>Offre de Prix</Text>
-          <View>
-            <Text style={styles.dateText}>Date: {formatDate(date)}</Text>
-            <Text style={[styles.dateText, { marginTop: 2 }]}>
-              Réf: CCOO-{date.getFullYear()}-
-              {String(date.getMonth() + 1).padStart(2, "0")}-
-              {String(date.getDate()).padStart(2, "0")}
-            </Text>
-          </View>
-        </View>
-
-        {/* Object Section */}
-        <View style={styles.objectSection}>
-          <Text style={styles.objectTitle}>
-            OBJET : Offre de prix - Huile d'olive Vierge Extra
+        {/* CLIENT */}
+        <View style={s.clientBlock}>
+          <Text style={s.sectionTitle}>CLIENT DETAILS</Text>
+          <Text style={s.clientLine}>
+            <Text style={s.bold}>Client / Company Name : </Text>{devis.clientName}
           </Text>
-          <Text style={styles.objectText}>
-            Nous avons le plaisir de vous soumettre notre offre EXW comme suit :
-          </Text>
+          {devis.clientAddress ? (
+            <Text style={s.clientLine}><Text style={s.bold}>Address: </Text>{devis.clientAddress}</Text>
+          ) : null}
+          {devis.clientPhone ? (
+            <Text style={s.clientLine}><Text style={s.bold}>Tel: </Text>{devis.clientPhone}</Text>
+          ) : null}
+          {devis.clientEmail ? (
+            <Text style={s.clientLine}><Text style={s.bold}>Email: </Text>{devis.clientEmail}</Text>
+          ) : null}
         </View>
 
-        {/* Client Information */}
-        <View style={styles.clientSection}>
-          <Text style={styles.sectionHeader}>INFORMATIONS CLIENT</Text>
-          <Text style={styles.clientInline}>
-            <Text style={{ fontWeight: "bold" }}>Client: </Text>
-            {devis.clientName}
-            {devis.clientEmail && (
-              <>
-                <Text style={{ fontWeight: "bold" }}> | Email: </Text>
-                {devis.clientEmail}
-              </>
-            )}
-            {devis.clientPhone && (
-              <>
-                <Text style={{ fontWeight: "bold" }}> | Tél: </Text>
-                {devis.clientPhone}
-              </>
-            )}
-          </Text>
+        {/* SUBJECT */}
+        <View style={s.subjectBlock}>
+          <Text style={s.sectionTitle}>SUBJECT :</Text>
+          <Text style={s.subjectText}>Price offer - Extra Virgin Olive Oil</Text>
         </View>
 
-        {/* Product Header */}
-        <Text style={styles.productHeader}>Huile d'olive Vierge Extra</Text>
-
-        {/* Items Table */}
-        <View style={styles.table}>
-          {/* Table Header */}
-          <View style={styles.tableHeader}>
-            <Text style={[styles.tableHeaderText, styles.colRef]}>Réf.</Text>
-            <Text style={[styles.tableHeaderText, styles.colDesignation]}>
-              Désignation
-            </Text>
-            <Text style={[styles.tableHeaderText, styles.colConditionnement]}>
-              Conditionnement
-            </Text>
-            <Text style={[styles.tableHeaderText, styles.colContenance]}>
-              Contenance
-            </Text>
-            <Text style={[styles.tableHeaderText, styles.colPrice]}>
-              Prix unitaire ({devis.currency})
-            </Text>
+        {/* TABLE */}
+        <View style={s.table}>
+          {/* Header row */}
+          <View style={s.tRow}>
+            <Text style={[s.tHCell, s.cRef]}>Ref.</Text>
+            <Text style={[s.tHCell, s.cPack]}>Packaging</Text>
+            <Text style={[s.tHCell, s.cVol]}>Volume</Text>
+            <Text style={[s.tHCell, s.cQty]}>Quantity</Text>
+            <Text style={[s.tHCell, s.cPrice]}>Unit Price{"\n"}EXW ({cSym})</Text>
+            <Text style={[s.tHCellNoBorder, s.cTotal]}>Total ({devis.currency})</Text>
           </View>
 
-          {/* Table Rows */}
-          {devis.items.map((item, index) => (
-            <View
-              key={item.id}
-              style={[
-                styles.tableRow,
-                index % 2 === 1 ? styles.tableRowAlt : {},
-              ]}
-            >
-              <Text style={[styles.tableCell, styles.colRef]}>{index + 1}</Text>
-              <Text
-                style={[
-                  styles.tableCell,
-                  styles.tableCellLeft,
-                  styles.colDesignation,
-                ]}
-              >
-                Huile d'olive Vierge Extra
-              </Text>
-              <Text style={[styles.tableCell, styles.colConditionnement]}>
-                {getConditionnementLabel(item.conditionnement)}
-              </Text>
-              <Text style={[styles.tableCell, styles.colContenance]}>
-                {getContenanceLabel(item.contenance)}
-              </Text>
-              <Text
-                style={[
-                  styles.tableCell,
-                  styles.tableCellRight,
-                  styles.colPrice,
-                ]}
-              >
-                {item.unitPrice.toFixed(3)}
-              </Text>
+          {/* Item rows */}
+          {devis.items.map((item, idx) => (
+            <View key={item.id} style={s.tRow}>
+              <View style={[s.tCell, s.cRef]}><Text style={s.tText}>{idx + 1}</Text></View>
+              <View style={[s.tCell, s.cPack]}><Text style={s.tText}>{COND_LABEL[item.conditionnement] || item.conditionnement}</Text></View>
+              <View style={[s.tCell, s.cVol]}><Text style={s.tText}>{CONTENANCE_LABEL[item.contenance] || item.contenance}</Text></View>
+              <View style={[s.tCell, s.cQty]}><Text style={s.tText}>{paletteLabel(item.contenance, item.quantity)}</Text></View>
+              <View style={[s.tCell, s.cPrice]}><Text style={s.tText}>{item.unitPrice.toFixed(3)}</Text></View>
+              <View style={[s.tCellNoBorder, s.cTotal]}><Text style={[s.tText, { textAlign: "right" }]}>{fmtNum(item.totalPrice)}</Text></View>
             </View>
           ))}
-        </View>
 
-        {/* Totals */}
-        <View style={styles.totalsContainer}>
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Sous-total:</Text>
-            <Text style={styles.totalValue}>
-              {currencySymbol} {devis.subtotal.toFixed(2)}
-            </Text>
-          </View>
-          <View style={styles.totalRow}>
-            <Text style={[styles.totalLabel, styles.grandTotal]}>Total:</Text>
-            <Text style={[styles.totalValue, styles.grandTotal]}>
-              {currencySymbol} {devis.total.toFixed(2)}
-            </Text>
-          </View>
-        </View>
+          {/* Transport fee row */}
+          {devis.transportFee > 0 && (
+            <View style={s.tRow}>
+              <View style={[s.tCell, s.cRef]}><Text style={s.tText}>{devis.items.length + 1}</Text></View>
+              <View style={[s.tCell, { flex: 1 }]}><Text style={[s.tText, { textAlign: "left" }]}>Transport fees</Text></View>
+              <View style={[s.tCell, s.cPrice]}><Text style={s.tText}>—</Text></View>
+              <View style={[s.tCellNoBorder, s.cTotal]}><Text style={[s.tText, { textAlign: "right" }]}>{fmtNum(devis.transportFee)}</Text></View>
+            </View>
+          )}
 
-        {/* Shipping Conditions & Banking in Two Columns */}
-        <View style={{ flexDirection: "row", gap: 8, marginTop: 8 }}>
-          {/* Shipping Conditions */}
-          <View style={[styles.conditionsContainer, { flex: 1 }]}>
-            <Text style={styles.conditionsTitle}>Conditions d'Expédition</Text>
-            <View style={styles.conditionRow}>
-              <Text style={styles.conditionLabel}>Origine:</Text>
-              <Text style={styles.conditionValue}>Tunisie</Text>
+          {/* Grand total */}
+          <View style={s.tRowLast}>
+            <View style={s.gtLabelCell}>
+              <Text style={s.gtLabel}>GRAND TOTAL EXW ({devis.currency})</Text>
             </View>
-            <View style={styles.conditionRow}>
-              <Text style={styles.conditionLabel}>Incoterm:</Text>
-              <Text style={styles.conditionValue}>EXW Sfax, Tunisie</Text>
-            </View>
-            <View style={styles.conditionRow}>
-              <Text style={styles.conditionLabel}>Validité:</Text>
-              <Text style={styles.conditionValue}>
-                7 jours à compter du {formatDate(date)}
-              </Text>
-            </View>
-          </View>
-
-          {/* Banking Information */}
-          <View style={[styles.bankingContainer, { flex: 1 }]}>
-            <Text style={styles.conditionsTitle}>Coordonnées Bancaires</Text>
-            <View style={styles.conditionRow}>
-              <Text style={styles.conditionLabel}>IBAN:</Text>
-              <Text style={styles.conditionValue}>
-                TN59 04703048008995308721
-              </Text>
-            </View>
-            <View style={styles.conditionRow}>
-              <Text style={styles.conditionLabel}>BIC:</Text>
-              <Text style={styles.conditionValue}>BSTUTNTT</Text>
-            </View>
-            <View style={styles.conditionRow}>
-              <Text style={styles.conditionLabel}>Banque:</Text>
-              <Text style={styles.conditionValue}>RIB Attijari Bank</Text>
+            <View style={s.gtValueCell}>
+              <Text style={s.gtValue}>{fmtNum(devis.grandTotal)}</Text>
             </View>
           </View>
         </View>
 
-        {/* Footer */}
-        <View style={styles.footer}>
-          <View style={styles.footerContent}>
-            <View style={styles.footerLeft}>
-              <Text style={styles.footerBold}>
-                STE CARTHAGE CROWN OLIVE OIL
-              </Text>
-              <Text style={styles.footerText}>
-                Avenue Habib Bourguiba 3080 Jebeniana - Sfax
-              </Text>
-              <Text style={styles.footerText}>Tél: +216 26878252</Text>
-              <Link
-                src="mailto:carthagecrown@gmail.com"
-                style={styles.footerEmail}
-              >
-                carthagecrown@gmail.com
-              </Link>
-            </View>
-            <View style={styles.footerRight}>
-              <Text style={styles.footerBold}>Carthage Crown</Text>
-              <Text style={styles.footerText}>Premium Quality</Text>
-              <Text style={styles.footerText}>Extra Virgin Olive Oil</Text>
-            </View>
-          </View>
-          <Text style={styles.companyRegistration}>
-            M.F.: 1858707 C/N/M/000 - R.C.: C0870132024
-          </Text>
+        <Footer />
+      </Page>
+
+      {/* ════ PAGE 2 ════ */}
+      <Page size="A4" style={s.page}>
+        <Header invoiceNum={invoiceNum} date={date} page={2} />
+
+        <Text style={s.p2TotalAmount}>
+          Total Amount: {devis.currency} {fmtNum(devis.grandTotal)}
+        </Text>
+
+        <View style={s.p2Section}>
+          {renderPage2(devis.page2Text)}
         </View>
+
+        <View style={s.stampSection}>
+          <View style={s.stampBox}>
+            <Text style={s.stampText}>CARTHAGE CROWN OLIVE OIL</Text>
+            <Text style={s.stampSub}>Avenue Habib Bourguiba{"\n"}Jebeniana — Sfax, Tunisia{"\n"}+33 7 59 52 75 90</Text>
+          </View>
+        </View>
+
+        <Footer />
       </Page>
     </Document>
   );
