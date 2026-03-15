@@ -217,9 +217,13 @@ const COND_LABEL: Record<string, string> = {
 // ── Hardcoded palette label overrides ────────────────────
 // Key: "contenance-quantity", Value: label to display
 const PALETTE_OVERRIDES: Record<string, string> = {
-  "ml1000-5040": "5040 (5 Pallets)",
-  "l5-3240":     "3240 (15 Pallets)",
-  "l20-225":     "225 (2 Pallets)",
+  "ml500-1512":  "1512 (1 Pallet)",
+  "ml750-1152":  "1152 (1 Pallet)",
+  "ml1000-3024": "3024 (3 Pallets)",
+  "l3-240":      "240 (1 Pallet)",
+  "l5-1536":     "1536 (8 Pallets)",
+  "l10-384":     "384 (4 Pallets)",
+  "l20-180":     "180 (4 Pallets)",
 };
 
 const paletteLabel = (contenance: string, qty: number): string => {

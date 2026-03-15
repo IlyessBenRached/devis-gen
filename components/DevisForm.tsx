@@ -72,9 +72,13 @@ Offer validity: Valid for 7 days from the date of issue of the quotation`
 
 // ── Hardcoded default items — DO NOT change quantities ───
 const DEFAULT_ITEMS: LineItem[] = [
-  { id: 'default-1', contenance: 'ml1000', conditionnement: 'verre', quantity: 5040, unitPrice: 5.846,  totalPrice: 5.846  * 5040 },
-  { id: 'default-2', contenance: 'l5',     conditionnement: 'metal', quantity: 3240, unitPrice: 24.320, totalPrice: 24.320 * 3240 },
-  { id: 'default-3', contenance: 'l20',    conditionnement: 'metal', quantity: 225,  unitPrice: 97.490, totalPrice: 97.490 * 225  },
+  { id: 'default-1', contenance: 'ml500',  conditionnement: 'verre', quantity: 1512, unitPrice: 2.508,  totalPrice: 2.508  * 1512 },
+  { id: 'default-2', contenance: 'ml750',  conditionnement: 'verre', quantity: 1152, unitPrice: 3.429,  totalPrice: 3.429  * 1152 },
+  { id: 'default-3', contenance: 'ml1000', conditionnement: 'verre', quantity: 3024, unitPrice: 5.846,  totalPrice: 5.846  * 3024 },
+  { id: 'default-4', contenance: 'l3',     conditionnement: 'metal', quantity: 240,  unitPrice: 10.500, totalPrice: 10.500 * 240  },
+  { id: 'default-5', contenance: 'l5',     conditionnement: 'metal', quantity: 1536, unitPrice: 24.320, totalPrice: 24.320 * 1536 },
+  { id: 'default-6', contenance: 'l10',    conditionnement: 'metal', quantity: 384,  unitPrice: 35.000, totalPrice: 35.000 * 384  },
+  { id: 'default-7', contenance: 'l20',    conditionnement: 'metal', quantity: 180,  unitPrice: 97.490, totalPrice: 97.490 * 180  },
 ]
 
 export default function DevisForm({ onPreview }: DevisFormProps) {
