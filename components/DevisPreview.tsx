@@ -17,7 +17,7 @@ const COND_LABEL: Record<string, string> = {
 }
 const VOL_LABEL: Record<string, string> = {
   ml250: '250ml', ml500: '500ml', ml750: '750ml', ml1000: '1L',
-  l3: '3L', l5: '5L', l10: '10L', l15: '15L', l20: '20L',
+  l3: '3L', l5: '5L', l10: '10L', l15: '15L', l20: '20L', l1000: '1000L',
 }
 
 // ── Hardcoded palette label overrides ────────────────────

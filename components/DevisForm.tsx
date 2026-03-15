@@ -41,7 +41,8 @@ const CONTENANCES = [
   { id: 'l5',     label: '5L',     price: 24.320 },
   { id: 'l10',    label: '10L',    price: 35.000 },
   { id: 'l15',    label: '15L',    price: 52.000 },
-  { id: 'l20',    label: '20L',    price: 97.490 },
+  { id: 'l20',    label: '20L',     price: 97.490   },
+  { id: 'l1000',  label: '1000L',   price: 4411.786 },
 ]
 
 const CONDITIONNEMENTS = [
@@ -78,7 +79,8 @@ const DEFAULT_ITEMS: LineItem[] = [
   { id: 'default-4', contenance: 'l3',     conditionnement: 'metal', quantity: 240,  unitPrice: 10.500, totalPrice: 10.500 * 240  },
   { id: 'default-5', contenance: 'l5',     conditionnement: 'metal', quantity: 1536, unitPrice: 24.320, totalPrice: 24.320 * 1536 },
   { id: 'default-6', contenance: 'l10',    conditionnement: 'metal', quantity: 384,  unitPrice: 35.000, totalPrice: 35.000 * 384  },
-  { id: 'default-7', contenance: 'l20',    conditionnement: 'metal', quantity: 180,  unitPrice: 97.490, totalPrice: 97.490 * 180  },
+  { id: 'default-7', contenance: 'l20',    conditionnement: 'metal', quantity: 180,  unitPrice: 97.490,   totalPrice: 97.490   * 180 },
+  { id: 'default-8', contenance: 'l1000',  conditionnement: 'metal', quantity: 1,    unitPrice: 4411.786, totalPrice: 4411.786 * 1   },
 ]
 
 export default function DevisForm({ onPreview }: DevisFormProps) {
